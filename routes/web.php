@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\PenjualanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,15 @@ Route::prefix('/pembelian')->middleware('auth')->group(function() {
     Route::get('', [PembelianController::class, 'index']);
     Route::post('', [PembelianController::class, 'store'])->name('pembelian.add');
     Route::post('{id}/update', [PembelianController::class, 'update'])->name('pembelian.edit');
+    Route::post('{id}/delete', [PembelianController::class, 'delete']);
+    Route::get('{id}', [PembelianController::class, 'detail']);
+});
+Route::prefix('/penjualan')->middleware('auth')->group(function() {
+    Route::get('', [PenjualanController::class, 'index']);
+    Route::post('', [PenjualanController::class, 'store'])->name('penjualan.add');
+    Route::post('{id}/update', [PenjualanController::class, 'update'])->name('penjualan.edit');
+    Route::post('{id}/delete', [PenjualanController::class, 'delete']);
+    Route::get('{id}', [PenjualanController::class, 'detail']);
 });
 
 require __DIR__.'/auth.php';

@@ -18,13 +18,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Pembelian Barang</h1>
+            <h1>Penjualan Barang</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
               <li class="breadcrumb-item">Transaksi</li>
-              <li class="breadcrumb-item active">Pembelian</li>
+              <li class="breadcrumb-item active">Penjualan</li>
             </ol>
           </div>
         </div>
@@ -37,7 +37,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Daftar Pembelian Barang</h3>
+                <h3 class="card-title">Daftar Penjualan Barang</h3>
                 <button type="button" class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#modal-add"><i class="fa fa-plus"></i> Tambah</button>
               </div>
               <!-- /.card-header -->
@@ -50,18 +50,20 @@
                     <th>Suplier</th>
                     <th>Harga (Rp)</th>
                     <th>Kuantitas</th>
+                    <th>Profit</th>
                     <th>Action</th>
                   </tr>
                   </thead>
                   <tbody>
-                    @foreach($pembelians as $key => $pembelian)
+                    @foreach($penjualans as $key => $penjualan)
                     <tr>
-                      <td>{{$pembelian->tanggal}}</td>
-                      <td>{{$pembelian->nama_barang}}</td>
-                      <td>{{$pembelian->nama_suplier}}</td>
-                      <td>{{$pembelian->harga}}</td>
-                      <td>{{$pembelian->kuantitas}}</td>
-                      <td><button class="btn btn-primary" onclick="edit({{$pembelian->id}})">edit</button> / <button class="btn btn-danger" onclick="del({{$pembelian->id}})">delete</button></td>
+                      <td>{{$penjualan->tanggal}}</td>
+                      <td>{{$penjualan->nama_barang}}</td>
+                      <td>{{$penjualan->nama_pembeli}}</td>
+                      <td>{{$penjualan->harga}}</td>
+                      <td>{{$penjualan->kuantitas}}</td>
+                      <td>{{$penjualan->profit}}</td>
+                      <td><button class="btn btn-primary" onclick="edit({{$penjualan->id}})">edit</button> / <button class="btn btn-danger" onclick="del({{$penjualan->id}})">delete</button></td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -72,6 +74,7 @@
                     <th>Suplier</th>
                     <th>Harga (Rp)</th>
                     <th>Kuantitas</th>
+                    <th>Profit</th>
                     <th>Action</th>
                   </tr>
                   </tfoot>
@@ -90,7 +93,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Tambah Pembelian Barang</h4>
+              <h4 class="modal-title">Tambah Penjualan Barang</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -99,7 +102,7 @@
               <!-- general form elements -->
               <div class="card card-primary">
                 <!-- form start -->
-                <form method="POST" action="{{route('pembelian.add')}}">
+                <form method="POST" action="{{route('penjualan.add')}}">
                   @csrf
                   <div class="card-body dark-mode">
                     <div class="form-group">
@@ -115,25 +118,33 @@
                       <label>Kode Barang</label>
                       <select name="kode_barang" class="form-control select2bs4" style="width: 100%;">
                         @foreach($barangs as $barang)
-                        <option value="{{$barang->kode}}">{{$barang->nama}}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label>Kode Suplier</label>
-                      <select name="id_suplier" class="form-control select2bs4" style="width: 100%;">
-                        @foreach($supliers as $suplier)
-                        <option value="{{$suplier->id}}">{{$suplier->nama}}</option>
+                        <option value="{{$barang->barang->kode}}">{{$barang->barang->nama}}</option>
                         @endforeach
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="harga">Harga (Rp)</label>
-                      <input type="number" class="form-control" id="harga" name="harga" placeholder="Input harga beli">
+                      <input type="number" class="form-control" id="harga" name="harga" placeholder="Input harga jual">
                     </div>
                     <div class="form-group">
                       <label for="kuantitas">Kuantitas</label>
                       <input type="number" class="form-control" id="kuantitas" name="kuantitas" placeholder="Input kuantitas">
+                    </div>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" id="check_gudang" name="check_gudang">
+                      <label class="form-check-label" for="check_gudang">Menuju gudang?</label>
+                    </div>
+                    <div class="form-group">
+                      <label>Gudang</label>
+                      <select name="id_gudang" id="id_gudang" class="form-control select2bs4" style="width: 100%;">
+                        @foreach($gudangs as $gudang)
+                        <option value="{{$gudang->id}}">{{$gudang->nama}}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="nama_pembeli">Nama Pembeli</label>
+                      <input type="text" class="form-control" id="nama_pembeli" name="nama_pembeli" placeholder="Input nama pembeli">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </div>
@@ -152,7 +163,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Edit Pembelian Barang</h4>
+              <h4 class="modal-title">Edit Penjualan Barang</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -175,27 +186,35 @@
                     </div>
                     <div class="form-group">
                       <label>Kode Barang</label>
-                      <select name="kode_barang" id="kode_barang2" class="form-control select2bs4" style="width: 100%;">
+                      <select name="kode_barang" id="kode_barang" class="form-control select2bs4" style="width: 100%;" disabled>
                         @foreach($barangs as $barang)
-                        <option value="{{$barang->kode}}">{{$barang->nama}}</option>
+                        <option value="{{$barang->barang->kode}}">{{$barang->barang->nama}}</option>
                         @endforeach
                       </select>
                     </div>
                     <div class="form-group">
-                      <label>Kode Suplier</label>
-                      <select name="id_suplier" id="id_suplier2" class="form-control select2bs4" style="width: 100%;">
-                        @foreach($supliers as $suplier)
-                        <option value="{{$suplier->id}}">{{$suplier->nama}}</option>
+                      <label for="harga">Harga (Rp)</label>
+                      <input type="number" class="form-control" id="harga2" name="harga" placeholder="Input harga jual" disabled>
+                    </div>
+                    <div class="form-group">
+                      <label for="kuantitas">Kuantitas</label>
+                      <input type="number" class="form-control" id="kuantitas2" name="kuantitas" placeholder="Input kuantitas" disabled>
+                    </div>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" id="check_gudang2" name="check_gudang">
+                      <label class="form-check-label" for="check_gudang">Menuju gudang?</label>
+                    </div>
+                    <div class="form-group">
+                      <label>Gudang</label>
+                      <select name="id_gudang" id="id_gudang2" class="form-control select2bs4" style="width: 100%;">
+                        @foreach($gudangs as $gudang)
+                        <option value="{{$gudang->id}}">{{$gudang->nama}}</option>
                         @endforeach
                       </select>
                     </div>
                     <div class="form-group">
-                      <label for="harga2">Harga (Rp)</label>
-                      <input type="number" class="form-control" id="harga2" name="harga" placeholder="Input harga beli">
-                    </div>
-                    <div class="form-group">
-                      <label for="kuantitas2">Kuantitas</label>
-                      <input type="number" class="form-control" id="kuantitas2" name="kuantitas" placeholder="Input kuantitas">
+                      <label for="nama_pembeli">Nama Pembeli</label>
+                      <input type="text" class="form-control" id="nama_pembeli2" name="nama_pembeli" placeholder="Input nama pembeli">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </div>
@@ -276,11 +295,37 @@
   });
   $(function () {
     //Initialize Select2 Elements
-    $('.select2').select2();
-
-    //Initialize Select2 Elements
     $('.select2bs4').select2({
       theme: 'bootstrap4'
+    });
+
+    $('#check_gudang').change(function() {
+      if ($(this).is(':checked')) {
+        $('#nama_pembeli').val($('#id_gudang').select2('data')[0].text);
+        $('#nama_pembeli').prop('disabled', true);
+      }
+      else {
+        $('#nama_pembeli').prop('disabled', false);
+      }
+    });
+    $('#id_gudang').change(function() {
+      if ($('#check_gudang').is(':checked')) {
+        $('#nama_pembeli').val($(this).select2('data')[0].text);
+      }
+    });
+    $('#check_gudang2').change(function() {
+      if ($(this).is(':checked')) {
+        $('#nama_pembeli2').val($('#id_gudang2').select2('data')[0].text);
+        $('#nama_pembeli2').prop('disabled', true);
+      }
+      else {
+        $('#nama_pembeli').prop('disabled', false);
+      }
+    });
+    $('#id_gudang2').change(function() {
+      if ($('#check_gudang2').is(':checked')) {
+        $('#nama_pembeli2').val($(this).select2('data')[0].text);
+      }
     });
 
     //Date and time picker
@@ -303,25 +348,28 @@
   });
   function edit(id) {
     $.ajax({
-      url: "/pembelian/"+id,
+      url: "/penjualan/"+id,
       type: "get",
     }).done(function(data) {
       $('#modal-edit').modal('show');
-      $('#form-edit').attr("action", "/pembelian/"+id+"/update");
+      $('#form-edit').attr("action", "/penjualan/"+id+"/update");
       $('#tgl2').val(data.tanggal);
       $('#kode_barang2').val(data.kode_barang).trigger('change');
-      $('#id_suplier2').val(data.id_suplier).trigger('change');
       $('#harga2').val(data.harga);
       $('#kuantitas2').val(data.kuantitas);
+      if(data.id_gudang) {
+        $('#id_gudang2').val(data.id_gudang).trigger('change');
+      }
+      $('#nama_pembeli2').val(data.nama_pembeli);
     });
   }
   function del(id) {
     $.ajax({
-      url: "/pembelian/"+id,
+      url: "/penjualan/"+id,
       type: "get",
     }).done(function(data) {
       $('#modal-delete').modal('show');
-      $('#form-delete').attr("action", "/pembelian/"+id+"/delete");
+      $('#form-delete').attr("action", "/penjualan/"+id+"/delete");
     });
   }
 </script>

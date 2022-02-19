@@ -52,7 +52,7 @@ class PembelianController extends Controller
         return redirect('pembelian');
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $this->validate($request,[
             'tanggal' => 'required',
@@ -61,6 +61,44 @@ class PembelianController extends Controller
             'harga' => 'required',
             'kuantitas' => 'required',
         ]);
+        $data = Pembelian::find($id);
+        if(!$data->stok) {
+            return redirect('/pembelian')->with('fail', 'Gagal edit pembelian karena data stok yang dibeli sudah berubah.');
+        }
+        else if($data->stok->jml_stok != $data->kuantitas) {
+            return redirect('/pembelian')->with('fail', 'Gagal edit pembelian karena data stok yang dibeli sudah berubah.');
+        }
+        $data->tanggal = $request->tanggal;
+        $data->kode_barang = $request->kode_barang;
+        $data->nama_barang = Barang::where('kode', $request->kode_barang)->first()->nama;
+        $data->id_suplier = $request->id_suplier;
+        $data->nama_suplier = Suplier::find($request->id_suplier)->nama;
+        $data->harga = $request->harga;
+        $data->kuantitas = $request->kuantitas;
+        $data->save();
+        Stok::find($data->id_stok)->delete();
+        $stok = new Stok;
+        $stok->kode_barang = $data->kode_barang;
+        $stok->tanggal_beli = $data->tanggal;
+        $stok->tanggal_masuk = $data->tanggal;
+        $stok->harga_beli = $data->harga;
+        $stok->jml_stok = $data->kuantitas;
+        $stok->kode_gudang = 'PST';
+        $stok->save();
+        $data->id_stok = $stok->id;
+        $data->save();
+
+        return redirect('pembelian');
+    }
+
+    public function delete(Request $request, $id)
+    {
+        $data = Pembelian::with('stok')->find($id);
+        if($data->stok->jml_stok != $data->kuantitas) {
+            return redirect('/pembelian')->with('fail', 'Data pembelian gagal dihapus karena data stok yang dibeli sudah berubah.');
+        }
+        $data->delete();
+        return redirect('/pembelian');
     }
 
     public function detail($id)
