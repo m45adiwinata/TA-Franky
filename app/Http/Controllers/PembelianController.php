@@ -7,15 +7,29 @@ use App\Models\Pembelian;
 use App\Models\Barang;
 use App\Models\Suplier;
 use App\Models\Stok;
+use Illuminate\Support\Facades\DB;
 
 class PembelianController extends Controller
 {
+    private function notifstok()
+    {
+        $data = DB::select(DB::raw(
+            "SELECT b.kode,b.nama, s.jml_stok FROM barang b
+                LEFT JOIN (SELECT kode_barang, SUM(jml_stok) AS jml_stok FROM stok GROUP BY kode_barang) AS s ON s.kode_barang = b.kode
+                WHERE s.jml_stok <= b.min_stok
+                OR s.jml_stok IS NULL"
+        ));
+
+        return $data;
+    }
+
     public function index()
     {
         $data['pembelians'] = Pembelian::get();
         $data['barangs'] = Barang::get();
         $data['supliers'] = Suplier::get();
         $data['side_index'] = 5;
+        $data['notifstoks'] = $this->notifstok();
         
         return view('transaksi.pembelian', $data);
     }
@@ -49,7 +63,7 @@ class PembelianController extends Controller
         $data->id_stok = $stok->id;
         $data->save();
 
-        return redirect('pembelian');
+        return redirect('pembelian')->with('success', 'Pembelian berhasil dimasukkan.');
     }
 
     public function update(Request $request, $id)

@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="{{asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 <!-- Tempusdominus Bootstrap 4 -->
 <link rel="stylesheet" href="{{asset('adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="{{asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
 @endsection
 @section('content')
   <!-- Content Wrapper. Contains page content -->
@@ -85,6 +87,7 @@
         </div>
         <!-- /.row -->
       </div>
+      <input type="hidden" id="session-0" value="{{session()->get('success')}}">
       <!-- /.container-fluid -->
       <div class="modal fade" id="modal-add">
         <div class="modal-dialog">
@@ -267,6 +270,8 @@
 <script src="{{asset('adminlte/plugins/select2/js/select2.full.min.js')}}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="{{asset('adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
+<!-- SweetAlert2 -->
+<script src="{{asset('adminlte/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 <!-- Page specific script -->
 <script>
   $(document).keydown(function(event) { 
@@ -300,6 +305,19 @@
       "autoWidth": false,
       "responsive": true,
     });
+
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    if ($('#session-0').val()) {
+      Toast.fire({
+        icon: 'success',
+        title: $('#session-0').val()
+      });
+    }
   });
   function edit(id) {
     $.ajax({

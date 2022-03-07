@@ -42,6 +42,7 @@
                     <th>Kode</th>
                     <th>Nama</th>
                     <th>Jenis</th>
+                    <th>Min Stok</th>
                     <th>Action</th>
                   </tr>
                   </thead>
@@ -51,6 +52,7 @@
                       <td>{{$barang->kode}}</td>
                       <td>{{$barang->nama}}</td>
                       <td>{{$barang->jenis}}</td>
+                      <td>{{$barang->min_stok}}</td>
                       <td><button class="btn btn-primary" onclick="edit({{$barang->id}})">edit</button> / <button class="btn btn-danger" onclick="del({{$barang->id}})">delete</button></td>
                     </tr>
                     @endforeach
@@ -60,6 +62,7 @@
                     <th>Kode</th>
                     <th>Nama</th>
                     <th>Jenis</th>
+                    <th>Min Stok</th>
                     <th>Action</th>
                   </tr>
                   </tfoot>
@@ -105,6 +108,10 @@
                         <option value="Bahan Pokok">Bahan Pokok</option>
                       </select>
                     </div>
+                    <div class="form-group">
+                      <label for="min_stok">Minimum Stok</label>
+                      <input type="number" class="form-control" id="min_stok" name="min_stok" placeholder="Input minimum jumlah stok">
+                    </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </div>
                   <!-- /.card-body -->
@@ -148,6 +155,10 @@
                         <option value="Barang Dagangan">Barang Dagangan</option>
                         <option value="Bahan Pokok">Bahan Pokok</option>
                       </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="min_stok_2">Minimum Stok</label>
+                      <input type="number" class="form-control" id="min_stok_2" name="min_stok" placeholder="Input minimum jumlah stok">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </div>
@@ -243,6 +254,7 @@
       $('#kode_barang_2').val(data.kode);
       $('#nama_barang_2').val(data.nama);
       $('#jenis_barang_2').val(data.jenis);
+      $('#min_stok_2').val(data.min_stok);
     });
   }
   function del(id) {

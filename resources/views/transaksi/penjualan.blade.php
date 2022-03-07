@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="{{asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 <!-- Tempusdominus Bootstrap 4 -->
 <link rel="stylesheet" href="{{asset('adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="{{asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
 @endsection
 @section('content')
   <!-- Content Wrapper. Contains page content -->
@@ -47,7 +49,7 @@
                   <tr>
                     <th>Tanggal</th>
                     <th>Barang</th>
-                    <th>Suplier</th>
+                    <th>Pembeli</th>
                     <th>Harga (Rp)</th>
                     <th>Kuantitas</th>
                     <th>Profit</th>
@@ -60,9 +62,9 @@
                       <td>{{$penjualan->tanggal}}</td>
                       <td>{{$penjualan->nama_barang}}</td>
                       <td>{{$penjualan->nama_pembeli}}</td>
-                      <td>{{$penjualan->harga}}</td>
+                      <td>Rp {{number_format($penjualan->harga,0,",",".")}}</td>
                       <td>{{$penjualan->kuantitas}}</td>
-                      <td>{{$penjualan->profit}}</td>
+                      <td>Rp {{number_format($penjualan->profit,0,",",".")}}</td>
                       <td><button class="btn btn-primary" onclick="edit({{$penjualan->id}})">edit</button> / <button class="btn btn-danger" onclick="del({{$penjualan->id}})">delete</button></td>
                     </tr>
                     @endforeach
@@ -88,6 +90,7 @@
         </div>
         <!-- /.row -->
       </div>
+      <input type="hidden" id="session-0" value="{{session()->get('success')}}">
       <!-- /.container-fluid -->
       <div class="modal fade" id="modal-add">
         <div class="modal-dialog">
@@ -118,17 +121,17 @@
                       <label>Kode Barang</label>
                       <select name="kode_barang" class="form-control select2bs4" style="width: 100%;">
                         @foreach($barangs as $barang)
-                        <option value="{{$barang->barang->kode}}">{{$barang->barang->nama}}</option>
+                        <option value="{{$barang->kode}}">{{$barang->nama}}</option>
                         @endforeach
                       </select>
                     </div>
                     <div class="form-group">
-                      <label for="harga">Harga (Rp)</label>
-                      <input type="number" class="form-control" id="harga" name="harga" placeholder="Input harga jual">
-                    </div>
-                    <div class="form-group">
                       <label for="kuantitas">Kuantitas</label>
                       <input type="number" class="form-control" id="kuantitas" name="kuantitas" placeholder="Input kuantitas">
+                    </div>
+                    <div class="form-group">
+                      <label for="harga">Harga (Rp)</label>
+                      <input type="number" class="form-control" id="harga" name="harga" placeholder="Input harga jual">
                     </div>
                     <div class="form-check">
                       <input type="checkbox" class="form-check-input" id="check_gudang" name="check_gudang">
@@ -188,17 +191,17 @@
                       <label>Kode Barang</label>
                       <select name="kode_barang" id="kode_barang" class="form-control select2bs4" style="width: 100%;" disabled>
                         @foreach($barangs as $barang)
-                        <option value="{{$barang->barang->kode}}">{{$barang->barang->nama}}</option>
+                        <option value="{{$barang->kode}}">{{$barang->nama}}</option>
                         @endforeach
                       </select>
                     </div>
                     <div class="form-group">
-                      <label for="harga">Harga (Rp)</label>
-                      <input type="number" class="form-control" id="harga2" name="harga" placeholder="Input harga jual" disabled>
-                    </div>
-                    <div class="form-group">
                       <label for="kuantitas">Kuantitas</label>
                       <input type="number" class="form-control" id="kuantitas2" name="kuantitas" placeholder="Input kuantitas" disabled>
+                    </div>
+                    <div class="form-group">
+                      <label for="harga">Harga (Rp)</label>
+                      <input type="number" class="form-control" id="harga2" name="harga" placeholder="Input harga jual" disabled>
                     </div>
                     <div class="form-check">
                       <input type="checkbox" class="form-check-input" id="check_gudang2" name="check_gudang">
@@ -286,6 +289,8 @@
 <script src="{{asset('adminlte/plugins/select2/js/select2.full.min.js')}}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="{{asset('adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
+<!-- SweetAlert2 -->
+<script src="{{asset('adminlte/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 <!-- Page specific script -->
 <script>
   $(document).keydown(function(event) { 
@@ -345,6 +350,20 @@
       "autoWidth": false,
       "responsive": true,
     });
+
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    if ($('#session-0').val()) {
+      Toast.fire({
+        icon: 'success',
+        title: $('#session-0').val()
+      });
+    }
+    
   });
   function edit(id) {
     $.ajax({
