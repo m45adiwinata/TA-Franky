@@ -82,13 +82,27 @@
                   </tr>
                   </thead>
                   <tbody>
+                    @php
+                      $stok = 0;
+                    @endphp
                     @foreach($distribusis as $key => $distribusi)
+                    @php
+                      if ($distribusi->ket == 'opname') {
+                        $stok += $distribusi->stok;
+                      }
+                      else if ($distribusi->ket == 'pembelian') {
+                        $stok += $distribusi->masuk;
+                      }
+                      else if ($distribusi->ket == 'penjualan') {
+                        $stok -= $distribusi->keluar;
+                      }
+                    @endphp
                     <tr>
-                      <td>{{$distribusi->tanggal}}</td>
+                      <td>{{date('Y-m-d', strtotime($distribusi->tanggal))}}</td>
                       <td>{{$distribusi->nama}}</td>
                       <td>{{$distribusi->masuk}}</td>
                       <td>{{$distribusi->keluar}}</td>
-                      <td>{{$distribusi->stok}}</td>
+                      <td>{{$stok}}</td>
                       <td style="text-align:right;">{{$distribusi->harga == '' ? '' : number_format($distribusi->harga,0,",",".")}}</td>
                       <td style="text-align:right;">{{$distribusi->harga == '' ? '' : number_format($distribusi->total_harga,0,",",".")}}</td>
                       <td style="text-align:right;">{{$distribusi->harga == '' ? '' : number_format($distribusi->keuntungan,0,",",".")}}</td>
@@ -102,9 +116,9 @@
                     <th>Masuk</th>
                     <th>Keluar</th>
                     <th>Stok</th>
-                    <th>Harga</th>
-                    <th>Total Harga</th>
-                    <th>Keuntungan</th>
+                    <th>Harga (Rp)</th>
+                    <th>Total Harga (Rp)</th>
+                    <th>Keuntungan (Rp)</th>
                   </tr>
                   </tfoot>
                 </table>
@@ -152,17 +166,8 @@
 
     $("#example1").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],"pageLength": 50,
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
 
     $('.select2bs4').select2({
       theme: 'bootstrap4'
