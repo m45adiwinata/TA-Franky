@@ -106,7 +106,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
+            <a href="/distribusi" class="nav-link{{($side_index==7)?' active':''}}">
               <i class="nav-icon fas fa-columns"></i>
               <p>
                 Distribusi

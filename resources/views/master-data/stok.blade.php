@@ -107,6 +107,10 @@
                 <form method="POST" action="{{route('stok.add')}}">
                   @csrf
                   <div class="card-body dark-mode">
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" id="check_opname" name="check_opname" checked>
+                      <label class="form-check-label" for="check_opname">Simpan sebagai stok opname?</label>
+                    </div>
                     <div class="form-group">
                       <label>Kode Barang</label>
                       <select name="kode" class="form-control select2bs4" style="width: 100%;">
@@ -354,7 +358,7 @@
   }
   function del(id) {
     $.ajax({
-      url: "/api/master-stok-barang/"+id,
+      url: "/master-stok-barang/"+id,
       type: "get",
     }).done(function(data) {
       $('#modal-delete').modal('show');

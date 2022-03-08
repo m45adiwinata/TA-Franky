@@ -334,8 +334,8 @@
     });
 
     //Date and time picker
-    $('#tanggal').datetimepicker({ format: 'YYYY-MM-DD', locale:'id-ID',icons: { time: 'far fa-clock' } });
-    $('#tanggal2').datetimepicker({ format: 'YYYY-MM-DD', locale:'id-ID',icons: { time: 'far fa-clock' } });
+    $('#tanggal').datetimepicker({ format: 'YYYY-MM-DD HH:mm:ss', locale:'id-ID',icons: { time: 'far fa-clock' } });
+    $('#tanggal2').datetimepicker({ format: 'YYYY-MM-DD HH:mm:ss', locale:'id-ID',icons: { time: 'far fa-clock' } });
 
     $("#example1").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,

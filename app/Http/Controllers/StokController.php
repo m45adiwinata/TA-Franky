@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Stok;
 use App\Models\Barang;
 use App\Models\Gudang;
+use App\Models\HistoryOpname;
 use Illuminate\Support\Facades\DB;
+use DateTime;
 use Auth;
 
 class StokController extends Controller
@@ -50,6 +52,13 @@ class StokController extends Controller
         $data->jml_stok = $request->jml_stok;
         $data->kode_gudang = $request->kode_gudang;
         $data->save();
+        if ($request->check_opname) {
+            $h_opname = new HistoryOpname;
+            $h_opname->kode_barang = $data->kode_barang;
+            $h_opname->jml_stok = $data->jml_stok;
+            $h_opname->tanggal = $data->tanggal_masuk;
+            $h_opname->save();
+        }
         return redirect('master-stok-barang');
     }
     public function update(Request $request,$id)

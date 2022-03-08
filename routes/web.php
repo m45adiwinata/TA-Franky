@@ -8,6 +8,7 @@ use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\DistribusiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,5 +69,6 @@ Route::prefix('/penjualan')->middleware('auth')->group(function() {
     Route::post('{id}/delete', [PenjualanController::class, 'delete']);
     Route::get('{id}', [PenjualanController::class, 'detail']);
 });
+Route::get('/distribusi', [DistribusiController::class, 'index']);
 
 require __DIR__.'/auth.php';
