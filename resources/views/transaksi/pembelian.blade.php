@@ -136,7 +136,7 @@
                     </div>
                     <div class="form-group">
                       <label for="kuantitas">Kuantitas</label>
-                      <input type="number" class="form-control" id="kuantitas" name="kuantitas" placeholder="Input kuantitas">
+                      <input type="number" class="form-control" id="kuantitas" name="kuantitas" placeholder="Input kuantitas" step="0.25">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </div>
@@ -198,7 +198,7 @@
                     </div>
                     <div class="form-group">
                       <label for="kuantitas2">Kuantitas</label>
-                      <input type="number" class="form-control" id="kuantitas2" name="kuantitas" placeholder="Input kuantitas">
+                      <input type="number" class="form-control" id="kuantitas2" name="kuantitas" placeholder="Input kuantitas" step="0.25">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </div>

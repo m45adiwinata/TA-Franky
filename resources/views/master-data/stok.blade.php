@@ -147,7 +147,7 @@
                     </div>
                     <div class="form-group">
                       <label for="jml_stok">Jumlah Opname</label>
-                      <input type="number" class="form-control" id="jml_stok" name="jml_stok" placeholder="Input jumlah barang opname">
+                      <input type="number" class="form-control" id="jml_stok" name="jml_stok" placeholder="Input jumlah barang opname" step="0.25">
                     </div>
                     <div class="form-group">
                       <label>Kode Gudang</label>
@@ -226,7 +226,7 @@
                     </div>
                     <div class="form-group">
                       <label for="jml_stok">Jumlah Opname</label>
-                      <input type="number" class="form-control" id="jml_stok_2" name="jml_stok" placeholder="Input jumlah barang opname">
+                      <input type="number" class="form-control" id="jml_stok_2" name="jml_stok" placeholder="Input jumlah barang opname" step="0.25">
                     </div>
                     <div class="form-group">
                       <label>Kode Gudang</label>

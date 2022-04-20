@@ -46,8 +46,8 @@
               <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Likes</span>
-                <span class="info-box-number">41,410</span>
+                <span class="info-box-text">Pembelian</span>
+                <span class="info-box-number">{{count($pembelians)}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -63,8 +63,8 @@
               <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Sales</span>
-                <span class="info-box-number">760</span>
+                <span class="info-box-text">Penjualan</span>
+                <span class="info-box-number">{{count($penjualans)}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -76,8 +76,8 @@
               <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">New Members</span>
-                <span class="info-box-number">2,000</span>
+                <span class="info-box-text">Members</span>
+                <span class="info-box-number">{{count($gudangs)}}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -119,7 +119,7 @@
                 <div class="row">
                   <div class="col-md-8">
                     <p class="text-center">
-                      <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
+                      <strong>Sales: November 2021</strong>
                     </p>
 
                     <div class="chart">
@@ -180,7 +180,7 @@
                   <div class="col-sm-3 col-6">
                     <div class="description-block border-right">
                       <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
-                      <h5 class="description-header">$35,210.43</h5>
+                      <h5 class="description-header">Rp {{number_format($revenue, 0, ',', '.')}}</h5>
                       <span class="description-text">TOTAL REVENUE</span>
                     </div>
                     <!-- /.description-block -->
@@ -189,7 +189,7 @@
                   <div class="col-sm-3 col-6">
                     <div class="description-block border-right">
                       <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
-                      <h5 class="description-header">$10,390.90</h5>
+                      <h5 class="description-header">Rp {{number_format($cost, 0, ',', '.')}}</h5>
                       <span class="description-text">TOTAL COST</span>
                     </div>
                     <!-- /.description-block -->
@@ -198,7 +198,7 @@
                   <div class="col-sm-3 col-6">
                     <div class="description-block border-right">
                       <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
-                      <h5 class="description-header">$24,813.53</h5>
+                      <h5 class="description-header">Rp {{number_format($profit, 0, ',', '.')}}</h5>
                       <span class="description-text">TOTAL PROFIT</span>
                     </div>
                     <!-- /.description-block -->
@@ -859,6 +859,11 @@
   <!-- /.content-wrapper -->
 @endsection
 @section('script')
+<script>
+  let dataGrafik = <?php echo($penjualans); ?>;
+  tanggals = dataGrafik.map(penjualan => penjualan.tanggal);
+  dataGrafik = dataGrafik.map(penjualan => parseFloat(penjualan.total));
+</script>
 <!-- PAGE PLUGINS -->
 <!-- jQuery Mapael -->
 <script src="{{asset('adminlte/plugins/jquery-mousewheel/jquery.mousewheel.js')}}"></script>

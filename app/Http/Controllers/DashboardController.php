@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Penjualan;
+use App\Models\Pembelian;
+use App\Models\Gudang;
 
 class DashboardController extends Controller
 {
@@ -23,7 +26,22 @@ class DashboardController extends Controller
     {
         $data['side_index'] = 0;
         $data['notifstoks'] = $this->notifstok();
+        $data['penjualans'] = Penjualan::select(DB::raw('DATE(tanggal) as tanggal, SUM(total) as total'))
+                                ->whereYear('tanggal', 2021)
+                                ->whereMonth('tanggal', 11)
+                                ->groupBy(DB::raw('DATE(tanggal)'))
+                                ->get();
+        $data['pembelians'] = Pembelian::get();
+        $data['gudangs'] = Gudang::get();
+        $data['revenue'] = Penjualan::sum('total');
+        $data['profit'] = Penjualan::sum('profit');
+        $data['cost'] = Pembelian::sum('total');
         
         return view('dashboard',$data);
+    }
+
+    public function getDataGrafikPenjualan()
+    {
+        return json_encode(Penjualan::get());
     }
 }

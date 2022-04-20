@@ -26,6 +26,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+Route::get('/get-data-grafik-penjualan', [DashboardController::class, 'getDataGrafikPenjualan'])->middleware(['auth']);
 Route::prefix('/master-barang')->middleware('auth')->group(function() {
     Route::get('', [MBarangController::class, 'index']);
     Route::post('', [MBarangController::class, 'store'])->name('barang.add');

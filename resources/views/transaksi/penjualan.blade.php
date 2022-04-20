@@ -127,7 +127,7 @@
                     </div>
                     <div class="form-group">
                       <label for="kuantitas">Kuantitas</label>
-                      <input type="number" class="form-control" id="kuantitas" name="kuantitas" placeholder="Input kuantitas">
+                      <input type="number" class="form-control" id="kuantitas" name="kuantitas" placeholder="Input kuantitas" step="0.25">
                     </div>
                     <div class="form-group">
                       <label for="harga">Harga (Rp)</label>
