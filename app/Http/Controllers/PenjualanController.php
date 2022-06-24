@@ -50,7 +50,7 @@ class PenjualanController extends Controller
         }])->first();
         $tanggal_barang = $barang->stok[0]->tanggal_beli;
         $tersedia = Stok::where('kode_barang', $request->kode_barang)->sum('jml_stok');
-        $permintaan = (int)$request->kuantitas;
+        $permintaan = (float)$request->kuantitas;
         $profit = 0;
         if ($tersedia < $request->kuantitas) {
             return redirect('penjualan')->with('fail', 'Jumlah permintaan melebihi persediaan ('.$tersedia.').');
@@ -87,8 +87,12 @@ class PenjualanController extends Controller
         }
         $data->profit = $profit;
         $data->save();
+        $messages = array('success' => 'Penjualan berhasil dimasukkan.');
+        if ($barang->min_stok >= $tersedia - $request->kuantitas) {
+            $messages['warning'] = $barang->nama." di bawah batas minimal stok. Segera lakukan pembelian.";
+        }
         
-        return redirect('penjualan')->with('success', 'Penjualan berhasil dimasukkan.');
+        return redirect('penjualan')->with($messages);
     }
 
     public function update(Request $request, $id)

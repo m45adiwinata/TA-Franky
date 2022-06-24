@@ -91,4 +91,15 @@ class StokController extends Controller
         $data = Stok::find($id);
         return $data;
     }
+
+    public function stokKritis()
+    {
+        $data['side_index'] = 8;
+        $data['notifstoks'] = $this->notifstok();
+        $data['stoks'] = DB::select(DB::raw("SELECT b.kode, b.nama, b.min_stok, IF(s.stok IS NULL, 0, s.stok) AS stok FROM barang b LEFT JOIN (
+            SELECT kode_barang, SUM(jml_stok) AS stok FROM stok GROUP BY kode_barang
+        ) s ON s.kode_barang = b.kode WHERE s.stok <= b.min_stok OR s.stok IS NULL"));
+
+        return view('master-data.stok-kritis', $data);
+    }
 }

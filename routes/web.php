@@ -71,5 +71,6 @@ Route::prefix('/penjualan')->middleware('auth')->group(function() {
     Route::get('{id}', [PenjualanController::class, 'detail']);
 });
 Route::get('/distribusi', [DistribusiController::class, 'index']);
+Route::get('/stok-kritis', [StokController::class, 'stokKritis'])->middleware('auth');
 
 require __DIR__.'/auth.php';

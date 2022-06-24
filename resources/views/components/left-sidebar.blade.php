@@ -104,6 +104,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="/stok-kritis" class="nav-link{{($side_index==8)?' active':''}}">
+              <i class="nav-icon fas fa-exclamation"></i>
+              <p>
+                Stok Kritis
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

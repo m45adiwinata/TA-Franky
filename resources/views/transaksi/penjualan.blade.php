@@ -91,6 +91,7 @@
         <!-- /.row -->
       </div>
       <input type="hidden" id="session-0" value="{{session()->get('success')}}">
+      <input type="hidden" id="session-1" value="{{session()->get('warning')}}">
       <!-- /.container-fluid -->
       <div class="modal fade" id="modal-add">
         <div class="modal-dialog">
@@ -361,6 +362,14 @@
       Toast.fire({
         icon: 'success',
         title: $('#session-0').val()
+      });
+    }
+    if ($('#session-1').val()) {
+      $(document).Toasts('create', {
+        class: 'bg-warning',
+        title: 'Peringatan',
+        subtitle: 'Stok Minimum',
+        body: $('#session-1').val()
       });
     }
     

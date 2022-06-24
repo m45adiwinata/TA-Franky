@@ -52,7 +52,7 @@
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">1 Notifications</span>
           <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
+            <a href="/stok-kritis" class="dropdown-item">
               <i class="fas fa-envelope mr-2"></i> {{count($notifstoks)}} stok barang kritis
             </a>
           <div class="dropdown-divider"></div>
